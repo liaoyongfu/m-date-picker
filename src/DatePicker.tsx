@@ -36,9 +36,11 @@ class DatePicker extends React.Component<IDatePickerProps, any> {
     mode: DATE,
     disabled: false,
     minuteStep: 1,
+    secondsStep: 1,
     onDateChange() {
     },
     use12Hours: false,
+    showSeconds: false
   };
 
   state = {
@@ -80,7 +82,15 @@ class DatePicker extends React.Component<IDatePickerProps, any> {
         case 4:
           newValue.setMinutes(value);
           break;
-        case 5:
+        case 5: {
+          if(props.showSeconds){
+            newValue.setSeconds(value);
+            break;
+          }
+          this.setAmPm(newValue, value);
+          break;
+        }
+        case 6:
           this.setAmPm(newValue, value);
           break;
         default:
@@ -302,8 +312,8 @@ class DatePicker extends React.Component<IDatePickerProps, any> {
   }
 
   getTimeData(date) {
-    let { minHour = 0, maxHour = 23, minMinute = 0, maxMinute = 59 } = this.props;
-    const { mode, locale, minuteStep, use12Hours } = this.props;
+    let { minHour = 0, maxHour = 23, minMinute = 0, maxMinute = 59, showSeconds, minSeconds = 0, maxSeconds = 59 } = this.props;
+    const { mode, locale, minuteStep, use12Hours, secondsStep } = this.props;
     const minDateMinute = this.getMinMinute();
     const maxDateMinute = this.getMaxMinute();
     const minDateHour = this.getMinHour();
@@ -371,14 +381,37 @@ class DatePicker extends React.Component<IDatePickerProps, any> {
         });
       }
     }
-    const cols = [
+
+    const seconds: any[] = [];
+    const selSeconds = date.getSeconds();
+    for (let i = minSeconds; i <= maxSeconds; i += secondsStep!) {
+      seconds.push({
+        value: i + '',
+        label: locale.minute ? i + locale.minute + '' : pad(i),
+      });
+      if (selSeconds > i && selSeconds < i + secondsStep!) {
+        seconds.push({
+          value: selSeconds + '',
+          label: locale.minute ? selSeconds + locale.minute + '' : pad(selSeconds),
+        });
+      }
+    }
+    let cols = [
       { key: 'hours', props: { children: hours } },
       { key: 'minutes', props: { children: minutes } },
-    ].concat(use12Hours ? [{
-      key: 'ampm',
-      props: { children: [{ value: '0', label: locale.am }, { value: '1', label: locale.pm }] },
-    }] : []);
-    return { cols, selMinute };
+    ];
+
+    if(showSeconds){
+      cols = cols.concat({key: 'seconds', props: { children: seconds }});
+    }
+
+    if(use12Hours){
+      cols = cols.concat(use12Hours ? [{
+        key: 'ampm',
+        props: { children: [{ value: '0', label: locale.am }, { value: '1', label: locale.pm }] },
+      }] : []);
+    }
+    return { cols, selMinute, selSeconds };
   }
 
   clipDate(date) {
@@ -418,7 +451,7 @@ class DatePicker extends React.Component<IDatePickerProps, any> {
   }
 
   getValueCols() {
-    const { mode, use12Hours } = this.props;
+    const { mode, use12Hours, showSeconds } = this.props;
     const date = this.getDate();
     let cols: any[] = [];
     let value: any[] = [];
@@ -450,7 +483,13 @@ class DatePicker extends React.Component<IDatePickerProps, any> {
       let nhour = hour;
       if (use12Hours) {
         nhour = hour > 12 ? hour - 12 : hour;
+        if(showSeconds){
+          dtValue = [nhour + '', time.selMinute + '', time.selSeconds + '' , (hour >= 12 ? 1 : 0) + ''];
+        }
         dtValue = [nhour + '', time.selMinute + '', (hour >= 12 ? 1 : 0) + ''];
+      }
+      if(showSeconds){
+        dtValue = [hour + '', time.selMinute + '', time.selSeconds + ''];
       }
       value = value.concat(dtValue);
     }

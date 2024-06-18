@@ -1,6 +1,6 @@
 {
-  "name": "rmc-date-picker",
-  "version": "6.0.10",
+  "name": "liaoyf-rmc-date-picker",
+  "version": "6.1.1",
   "description": "React Mobile DatePicker Component for web and react-native",
   "keywords": [
     "react",
@@ -33,9 +33,6 @@
     "build": "rc-tools run build",
     "gh-pages": "rc-tools run gh-pages",
     "start": "rc-tools run server --babel-runtime",
-    "prepublish": "rc-tools run guard",
-    "prepare": "rc-tools run guard",
-    "prepublishOnly": "rc-tools run guard",
     "pub": "rc-tools run pub --babel-runtime",
     "lint": "rc-tools run lint --no-js-lint",
     "test": "jest",
@@ -75,7 +72,6 @@
   },
   "typings": "./lib/index.d.ts",
   "pre-commit": [
-    "lint"
   ],
   "dependencies": {
     "babel-runtime": "6.x",

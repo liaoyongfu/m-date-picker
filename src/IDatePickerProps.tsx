@@ -25,6 +25,10 @@ interface IDatePickerProps {
   pickerPrefixCls?: string;
   className?: string;
   use12Hours?: boolean;
+  secondsStep?: number;
+  minSeconds?: number;
+  maxSeconds?: number;
+  showSeconds?: boolean;
 }
 
 export default IDatePickerProps;

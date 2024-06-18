@@ -4,6 +4,7 @@ export default {
   day: '',
   hour: '',
   minute: '',
+  seconds: '',
   am: 'AM',
   pm: 'PM',
 };

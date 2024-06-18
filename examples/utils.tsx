@@ -15,5 +15,5 @@ export function format(date) {
   let month = date.getMonth() + 1;
   month = month < 10 ? `0${month}` : month;
   mday = mday < 10 ? `0${mday}` : mday;
-  return `${date.getFullYear()}-${month}-${mday} ${date.getHours()}:${date.getMinutes()}`;
+  return `${date.getFullYear()}-${month}-${mday} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 }
