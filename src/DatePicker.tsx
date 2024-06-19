@@ -387,12 +387,12 @@ class DatePicker extends React.Component<IDatePickerProps, any> {
     for (let i = minSeconds; i <= maxSeconds; i += secondsStep!) {
       seconds.push({
         value: i + '',
-        label: locale.minute ? i + locale.minute + '' : pad(i),
+        label: locale.seconds ? i + locale.seconds + '' : pad(i),
       });
       if (selSeconds > i && selSeconds < i + secondsStep!) {
         seconds.push({
           value: selSeconds + '',
-          label: locale.minute ? selSeconds + locale.minute + '' : pad(selSeconds),
+          label: locale.seconds ? selSeconds + locale.seconds + '' : pad(selSeconds),
         });
       }
     }
